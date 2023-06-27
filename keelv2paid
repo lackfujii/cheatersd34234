@@ -22,7 +22,7 @@ if game.PlaceId == 2788229376 or game.PlaceId == 7213786345 then
     repeat wait() until game.Players.LocalPlayer.Character:WaitForChild("FULLY_LOADED_CHAR")
 end
 
-if Keel.MainSettings.Intro then 
+if Keel.MainSettings.Intro2 then 
     local cam = workspace.CurrentCamera
     local x = cam.ViewportSize.X
     local y = cam.ViewportSize.Y
@@ -40,7 +40,7 @@ if Keel.MainSettings.Intro then
     Image.BackgroundTransparency = 1
     Image.Position = UDim2.new(0, newx, 0, newy)
     Image.Size = UDim2.new(0, 793, 0, 392)
-    Image.Image = "rbxassetid://13858594439"
+    Image.Image = "rbxassetid://13881233486"
     Image.ImageTransparency = 1
     Image.AnchorPoint = Vector2.new(0.5,0.5)
 
@@ -62,6 +62,54 @@ if Keel.MainSettings.Intro then
     gui(Blur, {Size = 0},0.3)
     wait(0.3)
 end
+wait(3)
+
+
+if game.PlaceId == 2788229376 or game.PlaceId == 7213786345 then
+    repeat wait() until game.Players.LocalPlayer.Character:WaitForChild("FULLY_LOADED_CHAR")
+end
+
+if Keel.MainSettings.Intro then 
+    local cam = workspace.CurrentCamera
+    local x = cam.ViewportSize.X
+    local y = cam.ViewportSize.Y
+    local newx = math.floor(x * 0.5)
+    local newy = math.floor(y * 0.5)
+
+    local SpashScreen = Instance.new("ScreenGui")
+    local Image = Instance.new("ImageLabel")
+    SpashScreen.Name = "SpashScreen"
+    SpashScreen.Parent = game.CoreGui
+    SpashScreen.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    Image.Name = "Image"
+    Image.Parent = SpashScreen
+    Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Image.BackgroundTransparency = 1
+    Image.Position = UDim2.new(0, newx, 0, newy)
+    Image.Size = UDim2.new(0, 793, 0, 392)
+    Image.Image = "rbxassetid://13881220561"
+    Image.ImageTransparency = 1
+    Image.AnchorPoint = Vector2.new(0.5,0.5)
+
+    local Blur = Instance.new("BlurEffect")
+    Blur.Parent = game.Lighting
+    Blur.Size = 0
+    Blur.Name = math.random(1,123123)
+
+    local function gui(last, sex, t, s, inorout)
+        local TI = TweenInfo.new(t or 1, s or Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
+        local Tweening = game:GetService("TweenService"):Create(last, TI, sex)
+        Tweening:Play()
+    end
+
+    gui(Image, {ImageTransparency = 0},0.3)
+    gui(Blur, {Size = 20},0.3)
+    wait(3)
+    gui(Image, {ImageTransparency = 1},0.3)
+    gui(Blur, {Size = 0},0.3)
+    wait(0.3)
+end
+
 
 local function getnamecall()
     if game.PlaceId == 2788229376 then
@@ -101,8 +149,8 @@ end
 UserInputService.InputBegan:Connect(OnKeyPress)
 
 local LastRenderTime = 0
-local FullCircleRotation = 2 * math.pi
-local TotalRotation = 0
+local FullCirclespeed = 2 * math.pi
+local Totalspeed = 0
 
 local function RotateCamera()
     if Toggle then
@@ -110,13 +158,13 @@ local function RotateCamera()
         local TimeDelta = math.min(CurrentTime - LastRenderTime, 0.01)
         LastRenderTime = CurrentTime
 
-        local Rotation = CFrame.fromAxisAngle(Vector3.new(0, 1, 0), math.rad(RotationSpeed * TimeDelta))
-        Camera.CFrame = Camera.CFrame * Rotation
+        local speed = CFrame.fromAxisAngle(Vector3.new(0, 1, 0), math.rad(speed * TimeDelta))
+        Camera.CFrame = Camera.CFrame * speed
 
-        TotalRotation = TotalRotation + math.rad(RotationSpeed * TimeDelta)
-        if TotalRotation >= FullCircleRotation then
+        Totalspeed = Totalspeed + math.rad(speed * TimeDelta)
+        if Totalspeed >= FullCirclespeed then
             Toggle = false
-            TotalRotation = 0
+            Totalspeed = 0
         end
     end
 end
@@ -513,23 +561,7 @@ coroutine.resume(coroutine.create(function()
     end
 end))
 
-local mouse = lp:GetMouse()
-local Mouse = lp:GetMouse()
 
-mouse.KeyDown:Connect(function(Key)
-    local Keybind = Keel.Panic.Key:lower()
-    if (Key == Keybind) then
-        if Keel.Panic.Enabled == true then 
-            Keel.MainSettings.Notificaions.Enabled = false
-            Keel.FOV.Visible = false
-            Keel.SilentAim.Enabled = false
-            Keel.SilentAim.Keybind = false 
-            Keel.CamLock.Enabled = false
-            
-        end
-
-    end
-end)
 GetClosestPlayer = LPH_NO_VIRTUALIZE(function()
     local Target = nil
     local Closest = math.huge
@@ -542,36 +574,50 @@ end)
 
 
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ if getgenv().Keel.Misc.Headless == true then
+    game.Players.LocalPlayer.Character.Head.Transparency = 1
+    for i,v in pairs(game.Players.LocalPlayer.Character.Head:GetChildren()) do
+        if (v:IsA("Decal")) then
+            v.Transparency = 1
+        end
+    end
+end
+
+if getgenv().Keel.Misc.Korblox == true then
+    local ply = game.Players.LocalPlayer
+    local chr = ply.Character
+    chr.RightLowerLeg.MeshId = "902942093"
+    chr.RightLowerLeg.Transparency = "1"
+    chr.RightUpperLeg.MeshId = "http://www.roblox.com/asset/?id=902942096"
+    chr.RightUpperLeg.TextureID = "http://roblox.com/asset/?id=902843398"
+    chr.RightFoot.MeshId = "902942089"
+    chr.RightFoot.Transparency = "1"
+    game.Players.LocalPlayer.Character.Humanoid.Jump = false
+    wait(1)
+end
+
+local WallCheck = function(destination, ignore)
+    if getgenv().Keel.Checks.WallChecked then
+        local Origin = Camera.CFrame.p
+        local CheckRay = Ray.new(Origin, destination - Origin)
+        local Hit = game.workspace:FindPartOnRayWithIgnoreList(CheckRay, ignore)
+        return Hit == nil
+    else
+        return true
+    end
+ end
+
+
+ if getgenv().Keel.Checks.CrewCheck == true then
+    while true do
+        local newPlayer = game.Players.PlayerAdded:wait()
+        if player:IsInGroup(newPlayer.Group) then
+            table.insert(Ignored.Players, newPlayer)
+        end
+    end
+ end
+ ---
+ local TargetPart = nil
+ local ClosestPlayer = nil
+ local Chance = CalcChance(Aiming.HitChance)
+ local ShortestDistance = 1/0
